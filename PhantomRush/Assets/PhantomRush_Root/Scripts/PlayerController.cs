@@ -36,12 +36,12 @@ public class PlayerController : MonoBehaviour
 
     void MoveUp()
     {
-        anim.SetBool("Up", true);
+        anim.SetBool("up", true);
     }
     
     void MoveDown()
     {
-        anim.SetBool("Down", true);
+        anim.SetBool("down", true);
     }
 
     void MoveCenter()
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled)
         {
             isUp = false;
-            anim.SetBool("Up", false);
+            anim.SetBool("up", false);
         }
     }
 
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour
         else if (context.canceled)
         {
             isDown = false;
-            anim.SetBool("Down", false);
+            anim.SetBool("down", false);
         }
     }
 }

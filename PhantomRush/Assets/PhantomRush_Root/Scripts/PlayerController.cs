@@ -1,23 +1,34 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
     [Header("Private References")]
     PlayerInput playerInput;
-    Animator anim;
+    Vector3 upPos;
+    Vector3 downPos;
 
     [Header("Public References")]
+    [SerializeField] Transform upPoint;
+    [SerializeField] Transform downPoint;
 
     [Header("Input")]
 
     [Header("Player Stats")]
+    [SerializeField] float moveSpeed;
+    [SerializeField] float timeUp;
 
     [Header("Conditional values")]
-    bool isUp, isDown;
+    [SerializeField] bool isUp;
+    [SerializeField] bool isDown;
+    [SerializeField] bool upPressed;
+    [SerializeField] bool downPressed;
+    [SerializeField] bool returnDown;
 
     //[Header("Combat Parameters")]
 
@@ -25,23 +36,44 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
-        anim = GetComponent<Animator>();
+
+        upPos = upPoint.position;
+        downPos = downPoint.position;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (transform.position.y == upPos.y) { isUp = true; }
+        else if (transform.position.y == downPos.y) { isDown = true; returnDown = false; StopAllCoroutines(); }
+        else { isUp = false; isDown = false; }
     }
 
-    void MoveUp()
+    private IEnumerator MovePlayer(Vector3 targetPosition)
     {
-        anim.SetBool("up", true);
-    }
-    
-    void MoveDown()
-    {
-        anim.SetBool("down", true);
+        if (!returnDown)
+        {
+            while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+                yield return null;
+            }
+        }
+
+        if (isUp && returnDown)
+        {
+            yield return new WaitForSeconds(timeUp);
+
+            while (Vector3.Distance(transform.position, downPos) > 0.01f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, downPos, moveSpeed * Time.deltaTime);
+                yield return null;
+            }
+
+            returnDown = false;
+        }
+
+        StopAllCoroutines();
     }
 
     void MoveCenter()
@@ -51,33 +83,54 @@ public class PlayerController : MonoBehaviour
 
     public void InputMoveUp(InputAction.CallbackContext context)
     {
-        if (context.started && !isDown)
+        if (context.started && !downPressed)
         {
-            isUp = true;
-            MoveUp();
+            upPressed = true;
+
+            StopAllCoroutines();
+            StartCoroutine(MovePlayer(upPos));
         }
-        else if (context.started && isDown)
+        else if (context.started && downPressed)
         {
-            MoveCenter();
+            upPressed = true;
+            downPressed = true;
         }
         else if (context.canceled)
         {
-            isUp = false;
-            anim.SetBool("up", false);
+            upPressed = false;
+            returnDown = true;
+
+            StartCoroutine(MovePlayer(upPos));
         }
     }
 
     public void InputMoveDown(InputAction.CallbackContext context)
     {
-        if (context.started && !isUp)
+        if (context.started && !upPressed)
         {
-            isDown = true;
-            MoveDown();
+            downPressed = true;
+
+            StopAllCoroutines(); 
+            StartCoroutine(MovePlayer(downPos));
         }
-        else if (context.canceled)
+        else if (context.started && upPressed)
         {
-            isDown = false;
-            anim.SetBool("down", false);
+            upPressed = true;
+            downPressed = true;
+
+            StopAllCoroutines();
+            StartCoroutine(MovePlayer(downPos));
+        }
+        else if (context.canceled && !upPressed)
+        {
+            downPressed = false;
+        }
+        else if (context.canceled && upPressed)
+        {
+            upPressed = true;
+            downPressed = false;
+
+            StartCoroutine(MovePlayer(upPos));
         }
     }
 }

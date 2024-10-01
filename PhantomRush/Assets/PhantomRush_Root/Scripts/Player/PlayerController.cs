@@ -28,14 +28,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool isDown;
     [SerializeField] bool upPressed;
     [SerializeField] bool downPressed;
-    [SerializeField] bool goingUp;
-    [SerializeField] bool goingDown;
     bool returning;
     bool isCoroutineRunning;
 
     //[Header("Combat Parameters")]
 
-    // Start is called before the first frame update
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
@@ -45,7 +42,6 @@ public class PlayerController : MonoBehaviour
         downPos = downPoint.position;
     }
 
-    // Update is called once per frame
     void Update()
     {
         // Monitoreo constante de estados
@@ -88,20 +84,12 @@ public class PlayerController : MonoBehaviour
         // Al hacer cualquier movimiento se cancela el retorno automático
         returning = false;
 
-        // Avisamos si nos estamos moviendo
-        goingUp = (targetPosition == upPos);
-        goingDown = (targetPosition == downPos);
-
         // Nos movemos hacia la posición especificada
         while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
         {
             transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
             yield return null;
         }
-
-        // Dejamos de avisa al dejar de movernos
-        goingUp = false;
-        goingDown = false;
 
         //Corutina finalizada
         isCoroutineRunning = false;

@@ -16,12 +16,15 @@ public class PlayerController : MonoBehaviour
     [Header("Public References")]
     [SerializeField] Transform upPoint;
     [SerializeField] Transform downPoint;
+    [SerializeField] HitSignal hitSignalUp;
+    [SerializeField] HitSignal hitSignalDown;
 
-    [Header("Input")]
+    // [Header("Input")]
 
     [Header("Player Stats")]
     [SerializeField] float moveSpeed;
     [SerializeField] float timeUp;
+    [SerializeField] float hitRate;
 
     [Header("Conditional values")]
     [SerializeField] bool isUp;
@@ -30,25 +33,30 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool downPressed;
     bool returning;
     bool isCoroutineRunning;
-
-    //[Header("Combat Parameters")]
-
+    bool canHit;
+    
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
 
-        // Donde se encuentra el Player
+        // Se definen las posiciones
         upPos = upPoint.position;
         downPos = downPoint.position;
+
+        // Se definen valores de inicio
+        canHit = true;
     }
 
     void Update()
     {
-        // Monitoreo constante de estados
-        UptadeMonitoring();
+        // Monitoreo constante de movimientos del personaje
+        LocationMonitoring();
+
+        // Monitoreo constante de golpes del personaje
+        HitMonitoring();
     }
 
-    void UptadeMonitoring()
+    void LocationMonitoring()
     {
         // Comprobación si está arriba o abajo
         isUp = (transform.position.y == upPos.y);
@@ -73,7 +81,44 @@ public class PlayerController : MonoBehaviour
             // El player se mueve a la posición indicada
             if (!isCoroutineRunning) { StopAllCoroutines(); StartCoroutine(MovePlayer(downPos)); }
         }
+    }
 
+    void HitMonitoring()
+    {
+        // Comprobación de que tecla está pulsada
+        if (upPressed && !downPressed && canHit)
+        {
+            // Quitamos permiso de golpe temporalmente
+            canHit = false;
+            Invoke(nameof(RestartHit), hitRate);
+
+            // Enviamos señal de enemigo golpeado
+            if (hitSignalUp.inHitZone) GameManager.instance.upHit = true;
+        }
+        else if (!upPressed && downPressed && canHit)
+        {
+            // Quitamos permiso de golpe temporalmente
+            canHit = false;
+            Invoke(nameof(RestartHit), hitRate);
+
+            // Enviamos señal de enemigo golpeado
+            if (hitSignalDown.inHitZone) GameManager.instance.downHit = true;
+        }
+        else if (upPressed && downPressed && canHit)
+        {
+            // Quitamos permiso de golpe temporalmente
+            canHit = false;
+            Invoke(nameof(RestartHit), hitRate);
+
+            // Enviamos señal de enemigo golpeado
+            if (hitSignalUp.inHitZone && hitSignalDown.inHitZone) { GameManager.instance.upHit = true; GameManager.instance.downHit = true; }
+        }
+    }
+
+    void RestartHit()
+    {
+        // Reestablecer la posibilidad de golpear
+        canHit = true;
     }
 
     private IEnumerator MovePlayer(Vector3 targetPosition)

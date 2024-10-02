@@ -4,22 +4,23 @@ using UnityEngine;
 
 public class HitSignal : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
+    public bool inHitZone;
 
-    void Update()
-    {
-        
-    }
-
-    void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
         // Comprobar si el objeto que entró está en el layer de "EnemyLayer"
         if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
-            
+            inHitZone = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        // Comprobar si el objeto que salió está en el layer de "EnemyLayer"
+        if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+        {
+            inHitZone = false;
         }
     }
 }

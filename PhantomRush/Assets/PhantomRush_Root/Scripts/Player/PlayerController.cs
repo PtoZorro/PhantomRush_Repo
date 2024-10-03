@@ -25,7 +25,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool downKeyOnWait;
     [SerializeField] float graceTime;
     Coroutine inputCoroutine;
-    Coroutine moveCoroutine;
+    Coroutine moveUpCoroutine;
+    Coroutine moveDownCoroutine;
     Coroutine returnCoroutine;
 
     [Header("Player Stats")]
@@ -38,7 +39,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool upPressed;
     [SerializeField] bool downPressed;
     [SerializeField] bool returning;
-    [SerializeField] bool isCoroutineRunning;
+    [SerializeField] bool upCoroutineRunning;
+    [SerializeField] bool downCoroutineRunning;
+    [SerializeField] bool returnCoroutineRunning;
     bool canHit;
     
     void Start()
@@ -69,29 +72,47 @@ public class PlayerController : MonoBehaviour
         isDown = (transform.position.y == downPos.y);
 
         // Si la tecla arriba está presionada
-        if (upPressed && !downPressed && !isCoroutineRunning)
+        if (upPressed && !downPressed && !upCoroutineRunning)
         {
             if (!isUp) // Solo mover si no está ya en la posición superior
             {
-                if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-                moveCoroutine = StartCoroutine(MovePlayer(upPos));
+                // Indicamos que Corutinas ya no están en marcha al interrumpirlas
+                returnCoroutineRunning = false;
+
+                // Interrumpimos las corutinas necesarias
+                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); }
+                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); }
+                moveUpCoroutine = StartCoroutine(MovePlayerUp());
             }
         }
         // Si la tecla abajo está presionada
-        else if (downPressed)
+        else if (downPressed && !downCoroutineRunning)
         {
             if (!isDown) // Solo mover si no está ya en la posición inferior
             {
-                if (moveCoroutine != null) StopCoroutine(moveCoroutine);
-                isCoroutineRunning = false;
-                moveCoroutine = StartCoroutine(MovePlayer(downPos));
+                // Indicamos que Corutinas ya no están en marcha al interrumpirlas
+                upCoroutineRunning = false;
+                returnCoroutineRunning = false;
+
+                // Interrumpimos las corutinas necesarias
+                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); }
+                if (moveDownCoroutine != null) { StopCoroutine(moveDownCoroutine); }
+                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); }
+
+                // Iniciamos corutina de movimiento
+                moveDownCoroutine = StartCoroutine(MovePlayerDown());
             }
         }
         // Si no se está presionando ninguna tecla
-        else if (!upPressed && !downPressed && returning && isUp)
+        else if (!upPressed && !downPressed && returning && isUp && !returnCoroutineRunning)
         {
-            // Solo volver si está arriba y no se presionan otras teclas
+            // Indicamos que Corutinas ya no están en marcha al interrumpirlas
+            upCoroutineRunning = false;
+
+            // Interrumpimos las corutinas necesarias
             if (returnCoroutine != null) StopCoroutine(returnCoroutine);
+
+            // Iniciamos corutina de movimiento
             returnCoroutine = StartCoroutine(ReturnPlayer());
         }
     }
@@ -134,27 +155,49 @@ public class PlayerController : MonoBehaviour
         canHit = true;
     }
 
-    private IEnumerator MovePlayer(Vector3 targetPosition)
+    private IEnumerator MovePlayerUp()
     {
         // Corrutina en marcha
-        isCoroutineRunning = true;
+        upCoroutineRunning = true;
 
         // Al hacer cualquier movimiento se cancela el retorno automático
         returning = false;
 
         // Nos movemos hacia la posición especificada
-        while (Vector3.Distance(transform.position, targetPosition) > 0.01f)
+        while (Vector3.Distance(transform.position, upPos) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, upPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
 
         //Corutina finalizada
-        isCoroutineRunning = false;
+        upCoroutineRunning = false;
+    }
+
+    private IEnumerator MovePlayerDown()
+    {
+        // Corrutina en marcha
+        downCoroutineRunning = true;
+
+        // Al hacer cualquier movimiento se cancela el retorno automático
+        returning = false;
+
+        // Nos movemos hacia la posición especificada
+        while (Vector3.Distance(transform.position, downPos) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, downPos, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        //Corutina finalizada
+        downCoroutineRunning = false;
     }
 
     private IEnumerator ReturnPlayer()
     {
+        // Corrutina en marcha
+        returnCoroutineRunning = true;
+
         yield return new WaitForSeconds(timeUp);
 
         // Nos movemos hacia la posición especificada
@@ -166,6 +209,9 @@ public class PlayerController : MonoBehaviour
 
         // Dejamos de avisa al dejar de movernos
         returning = false;
+
+        // Corrutina en marcha
+        returnCoroutineRunning = false;
     }
 
     public void InputMoveUp(InputAction.CallbackContext context)

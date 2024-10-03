@@ -151,6 +151,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66286cbb44d07a4419b93073c9674cf0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
+  maxHealth: 100
+  decreaseHealthSpeed: 20
   upHit: 0
   downHit: 0
 --- !u!4 &202477987
@@ -790,13 +793,19 @@ MonoBehaviour:
   hitSignalUp: {fileID: 602338899}
   hitSignalDown: {fileID: 1695058764}
   hitRate: 0.5
-  graceTime: 0.1
+  upKeyOnWait: 0
+  downKeyOnWait: 0
+  graceTime: 0.075
   moveSpeed: 100
   timeUp: 0.5
   isUp: 0
   isDown: 0
   upPressed: 0
   downPressed: 0
+  returning: 0
+  upCoroutineRunning: 0
+  downCoroutineRunning: 0
+  returnCoroutineRunning: 0
 --- !u!114 &879663041
 MonoBehaviour:
   m_ObjectHideFlags: 0

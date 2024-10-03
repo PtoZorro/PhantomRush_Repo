@@ -1,11 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.VisionOS;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameManager : MonoBehaviour
 {
     // Declaración de Singleton
     public static GameManager instance;
+
+    [Header("Stats")]
+    [SerializeField] int health;
+    [SerializeField] int maxHealth;
+    [SerializeField] float decreaseHealthSpeed;
 
     [Header("Signals")]
     public bool upHit;
@@ -21,17 +28,38 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject); // Si ya existe una instancia, destruir el objeto para evitar duplicados
+            // Si ya existe una instancia, destruir el objeto para evitar duplicados
+            Destroy(gameObject); 
         }
+    }
+
+    private void Start()
+    {
+        health = maxHealth;
     }
 
     private void Update()
     {
+        // Monitoreo de Golpes para interacción con enemigos
         HitInteraction();
+
+        // Monitoreo de salud
+        HealthMonitoring();
+    }
+
+    void HealthMonitoring()
+    {
+        // Reducimos el valor de manera constante
+        if (health > 0) health -= Mathf.RoundToInt(decreaseHealthSpeed * Time.deltaTime);
+        // Evitamos que el valor baje de 0
+        else health = 0;
+
+        //Debug.Log("Valor actual: " + health);
     }
 
     void HitInteraction()
     {
+        // Depende de donde golpeamos, mandamos una o dos señales
         if (upHit && !downHit) { Debug.Log("Up Enemy Hitted"); upHit = false; }
         else if (!upHit && downHit) { Debug.Log("Down Enemy Hitted"); downHit = false; }
         else if (upHit && downHit) { Debug.Log("Both Enemies Hitted"); upHit = false; downHit = false; }

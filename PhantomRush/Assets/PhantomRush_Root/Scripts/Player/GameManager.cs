@@ -54,8 +54,6 @@ public class GameManager : MonoBehaviour
         if (health > 0) health -= decreaseHealthSpeed;
         // Evitamos que el valor baje de 0
         else health = 0;
-
-        //Debug.Log("Valor actual: " + health);
     }
 
     void HitInteraction()

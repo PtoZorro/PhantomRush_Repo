@@ -80,8 +80,8 @@ public class PlayerController : MonoBehaviour
                 returnCoroutineRunning = false;
 
                 // Interrumpimos las corutinas necesarias
-                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); }
-                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); }
+                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); upCoroutineRunning = false; }
+                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
                 moveUpCoroutine = StartCoroutine(MovePlayerUp());
             }
         }
@@ -95,9 +95,9 @@ public class PlayerController : MonoBehaviour
                 returnCoroutineRunning = false;
 
                 // Interrumpimos las corutinas necesarias
-                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); }
-                if (moveDownCoroutine != null) { StopCoroutine(moveDownCoroutine); }
-                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); }
+                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); upCoroutineRunning = false; }
+                if (moveDownCoroutine != null) { StopCoroutine(moveDownCoroutine); downCoroutineRunning = false; }
+                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
 
                 // Iniciamos corutina de movimiento
                 moveDownCoroutine = StartCoroutine(MovePlayerDown());
@@ -110,7 +110,7 @@ public class PlayerController : MonoBehaviour
             upCoroutineRunning = false;
 
             // Interrumpimos las corutinas necesarias
-            if (returnCoroutine != null) StopCoroutine(returnCoroutine);
+            if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
 
             // Iniciamos corutina de movimiento
             returnCoroutine = StartCoroutine(ReturnPlayer());
@@ -224,6 +224,10 @@ public class PlayerController : MonoBehaviour
             // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
             if (inputCoroutine != null) StopCoroutine(inputCoroutine);
             inputCoroutine = StartCoroutine(GracePeriod());
+
+            // Paramos la corutina de vuelta lo antes posible si hay input
+            if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
+            returning = false;
         }
         else if (context.canceled)
         {

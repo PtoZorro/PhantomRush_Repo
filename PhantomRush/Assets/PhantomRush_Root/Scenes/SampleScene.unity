@@ -795,7 +795,7 @@ MonoBehaviour:
   hitRate: 0.5
   upKeyOnWait: 0
   downKeyOnWait: 0
-  graceTime: 0.075
+  graceTime: 0.05
   moveSpeed: 100
   timeUp: 0.5
   isUp: 0

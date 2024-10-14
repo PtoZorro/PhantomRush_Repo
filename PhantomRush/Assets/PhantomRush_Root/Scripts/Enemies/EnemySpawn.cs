@@ -61,12 +61,12 @@ public class EnemySpawn : MonoBehaviour
             enemyArray[enemiesSpawned] = enemy;
         }
     }
-    
+
 
     void Pool()
     {
         // Randomizamos la posición de aparición de enemigos e instanciamos
-        int randomValue = Random.Range(0, 2);
+        int randomValue = Random.Range(0, 3);
 
         // Cuando el contador de enemigos llegue al final volvemos a 0;
         enemySelected = enemySelected >= maxEnemiesSpawned ? 0 : enemySelected;

@@ -1,10 +1,7 @@
-using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
 
 public class PlayerController : MonoBehaviour
 {
@@ -43,6 +40,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool downCoroutineRunning;
     [SerializeField] bool returnCoroutineRunning;
     bool canHit;
+    bool avoidHold;
     
     void Start()
     {
@@ -54,6 +52,7 @@ public class PlayerController : MonoBehaviour
 
         // Se definen valores de inicio
         canHit = true;
+        avoidHold = false;
     }
 
     void Update()
@@ -120,28 +119,31 @@ public class PlayerController : MonoBehaviour
     void HitMonitoring()
     {
         // Comprobación de que tecla está pulsada
-        if (upPressed && !downPressed && canHit)
+        if (upPressed && !downPressed && canHit && !avoidHold)
         {
-            // Quitamos permiso de golpe temporalmente
+            // Quitamos permiso de golpe temporalmente y negamos posibilidad de mantener para golpear siempre
             canHit = false;
+            avoidHold = true;
             Invoke(nameof(RestartHit), hitRate);
 
             // Enviamos señal de enemigo golpeado
             if (hitSignalUp.inHitZone) GameManager.instance.upHit = true;
         }
-        else if (!upPressed && downPressed && canHit)
+        else if (!upPressed && downPressed && canHit && !avoidHold)
         {
-            // Quitamos permiso de golpe temporalmente
+            // Quitamos permiso de golpe temporalmente y negamos posibilidad de mantener para golpear siempre
             canHit = false;
+            avoidHold = true;
             Invoke(nameof(RestartHit), hitRate);
 
             // Enviamos señal de enemigo golpeado
             if (hitSignalDown.inHitZone) GameManager.instance.downHit = true;
         }
-        else if (upPressed && downPressed && canHit)
+        else if (upPressed && downPressed && canHit && !avoidHold)
         {
-            // Quitamos permiso de golpe temporalmente
+            // Quitamos permiso de golpe temporalmente y negamos posibilidad de mantener para golpear siempre
             canHit = false;
+            avoidHold = true;
             Invoke(nameof(RestartHit), hitRate);
 
             // Enviamos señal de enemigo golpeado
@@ -234,6 +236,7 @@ public class PlayerController : MonoBehaviour
             // Bools de estado
             upKeyOnWait = false;
             upPressed = false;
+            avoidHold = false;
 
             // Bool que manda señal para que el personaje baje al cabo de un tiempo
             returning = true;
@@ -256,6 +259,7 @@ public class PlayerController : MonoBehaviour
             // Bools de estado
             downKeyOnWait = false;
             downPressed = false;
+            avoidHold = false;
         }
     }
 

@@ -48,7 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 10
-  healthRestored: 1000
+  healthRestored: 50
 --- !u!61 &6536286777608032141
 BoxCollider2D:
   m_ObjectHideFlags: 0

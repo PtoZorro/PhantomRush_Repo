@@ -34,24 +34,24 @@ public class EnemyController : MonoBehaviour
 
     void Hitted()
     {
-        //Si el player ha golpeado en la zona adecuada eliminamos al enemigo
+        //Si el player ha golpeado en la zona adecuada eliminamos al enemigo y sumamos salud
         if (inUpZone && GameManager.instance.upHit)
         {
             inUpZone = false;
-            GameManager.instance.health += healthRestored;
+            GameManager.instance.healthModified += healthRestored;
             gameObject.SetActive(false);
         }
         else if (inDownZone && GameManager.instance.downHit)
         {
             inDownZone = false;
-            GameManager.instance.health += healthRestored;
+            GameManager.instance.healthModified += healthRestored;
             gameObject.SetActive(false);
         }
     }
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Comprobar si el objeto que entró está en el layer de "HitZone"
+        // Comprobar si hemos entrado en la zona de golpeo
         if (other.gameObject.layer == LayerMask.NameToLayer("UpHitZone"))
         {
             inUpZone = true;
@@ -60,6 +60,7 @@ public class EnemyController : MonoBehaviour
         {
             inDownZone = true;
         }
+        // Si entra en la zona límite se desactiva
         else if (other.gameObject.layer == LayerMask.NameToLayer("DestroyZone"))
         {
             inUpZone = false;
@@ -70,7 +71,7 @@ public class EnemyController : MonoBehaviour
 
     void OnTriggerExit2D(Collider2D other)
     {
-        // Comprobar si el objeto que entró está en el layer de "HitZone"
+        // Comprobar si hemos entrado en la zona de golpeo
         if (other.gameObject.layer == LayerMask.NameToLayer("UpHitZone"))
         {
             inUpZone = false;

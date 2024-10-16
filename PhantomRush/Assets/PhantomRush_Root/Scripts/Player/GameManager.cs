@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     [Header("Stats")]
     public int health;
     public int maxHealth;
-    [SerializeField] int decreaseHealthSpeed;
+    public float decreaseHealthSpeed;
+    public float healthModified;
 
     [Header("Signals")]
     public bool upHit;
@@ -35,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
         // Se definen valores de inicio
         health = maxHealth;
+        healthModified = maxHealth;
     }
 
     private void Update()
@@ -48,10 +50,13 @@ public class GameManager : MonoBehaviour
 
     void HealthMonitoring()
     {
+        // Multiplicamos el valor de la reducción de vida por el timpo de manera constante;
+        healthModified -= (decreaseHealthSpeed * Time.deltaTime);
         // Reducimos el valor de manera constante
-        if (health > 0) health -= decreaseHealthSpeed;
-        // Evitamos que el valor baje de 0
-        else health = 0;
+        health = Mathf.FloorToInt(healthModified);
+        // Evitamos que el valor rebase el máximo o baje de 0
+        if (healthModified > maxHealth) healthModified = maxHealth;
+        else if (healthModified < 0) healthModified = 0;
     }
 
     void HitInteraction()

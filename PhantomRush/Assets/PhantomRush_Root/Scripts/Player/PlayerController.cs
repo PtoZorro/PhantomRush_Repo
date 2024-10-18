@@ -7,12 +7,11 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Private References")]
     PlayerInput playerInput;
-    Vector3 upPos;
-    Vector3 downPos;
+    [SerializeField] Transform upPos;
+    [SerializeField] Transform midPos;
+    [SerializeField] Transform downPos;
 
     [Header("Public References")]
-    [SerializeField] Transform upPoint;
-    [SerializeField] Transform downPoint;
     [SerializeField] HitSignal hitSignalUp;
     [SerializeField] HitSignal hitSignalDown;
 
@@ -37,6 +36,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool downPressed;
     [SerializeField] bool returning;
     [SerializeField] bool upCoroutineRunning;
+    [SerializeField] bool midCoroutineRunning;
     [SerializeField] bool downCoroutineRunning;
     [SerializeField] bool returnCoroutineRunning;
     bool canHit;
@@ -44,11 +44,8 @@ public class PlayerController : MonoBehaviour
     
     void Start()
     {
+        // Obtenemos referencias
         playerInput = GetComponent<PlayerInput>();
-
-        // Se definen las posiciones
-        upPos = upPoint.position;
-        downPos = downPoint.position;
 
         // Se definen valores de inicio
         canHit = true;
@@ -67,8 +64,8 @@ public class PlayerController : MonoBehaviour
     void LocationMonitoring()
     {
         // Comprobación si está arriba o abajo
-        isUp = (transform.position.y == upPos.y);
-        isDown = (transform.position.y == downPos.y);
+        isUp = (transform.position.y == upPos.position.y);
+        isDown = (transform.position.y == downPos.position.y);
 
         // Si la tecla arriba está presionada
         if (upPressed && !downPressed && !upCoroutineRunning)
@@ -76,6 +73,8 @@ public class PlayerController : MonoBehaviour
             if (!isUp) // Solo mover si no está ya en la posición superior
             {
                 // Indicamos que Corutinas ya no están en marcha al interrumpirlas
+                midCoroutineRunning = false;
+                downCoroutineRunning = false;
                 returnCoroutineRunning = false;
 
                 // Interrumpimos las corutinas necesarias
@@ -85,12 +84,13 @@ public class PlayerController : MonoBehaviour
             }
         }
         // Si la tecla abajo está presionada
-        else if (downPressed && !downCoroutineRunning)
+        else if (downPressed && !downPressed && !downCoroutineRunning)
         {
             if (!isDown) // Solo mover si no está ya en la posición inferior
             {
                 // Indicamos que Corutinas ya no están en marcha al interrumpirlas
                 upCoroutineRunning = false;
+                midCoroutineRunning = false;
                 returnCoroutineRunning = false;
 
                 // Interrumpimos las corutinas necesarias
@@ -100,6 +100,25 @@ public class PlayerController : MonoBehaviour
 
                 // Iniciamos corutina de movimiento
                 moveDownCoroutine = StartCoroutine(MovePlayerDown());
+            }
+        }
+        // Si ambas teclas están presionada
+        else if (downPressed && upPressed && !midCoroutineRunning)
+        {
+            if (!isDown) // Solo mover si no está ya en la posición mediana
+            {
+                // Indicamos que Corutinas ya no están en marcha al interrumpirlas
+                upCoroutineRunning = false;
+                downCoroutineRunning = false;
+                returnCoroutineRunning = false;
+
+                // Interrumpimos las corutinas necesarias
+                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); upCoroutineRunning = false; }
+                if (moveDownCoroutine != null) { StopCoroutine(moveDownCoroutine); downCoroutineRunning = false; }
+                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
+
+                // Iniciamos corutina de movimiento
+                moveDownCoroutine = StartCoroutine(MovePlayerMid());
             }
         }
         // Si no se está presionando ninguna tecla
@@ -166,14 +185,33 @@ public class PlayerController : MonoBehaviour
         returning = false;
 
         // Nos movemos hacia la posición especificada
-        while (Vector3.Distance(transform.position, upPos) > 0.01f)
+        while (Vector3.Distance(transform.position, upPos.position) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, upPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, upPos.position, moveSpeed * Time.deltaTime);
             yield return null;
         }
 
         //Corutina finalizada
         upCoroutineRunning = false;
+    }
+
+    private IEnumerator MovePlayerMid()
+    {
+        // Corrutina en marcha
+        midCoroutineRunning = true;
+
+        // Al hacer cualquier movimiento se cancela el retorno automático
+        returning = false;
+
+        // Nos movemos hacia la posición especificada
+        while (Vector3.Distance(transform.position, midPos.position) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, midPos.position, moveSpeed * Time.deltaTime);
+            yield return null;
+        }
+
+        //Corutina finalizada
+        midCoroutineRunning = false;
     }
 
     private IEnumerator MovePlayerDown()
@@ -185,9 +223,9 @@ public class PlayerController : MonoBehaviour
         returning = false;
 
         // Nos movemos hacia la posición especificada
-        while (Vector3.Distance(transform.position, downPos) > 0.01f)
+        while (Vector3.Distance(transform.position, downPos.position) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, downPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, downPos.position, moveSpeed * Time.deltaTime);
             yield return null;
         }
 
@@ -203,9 +241,9 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(timeUp);
 
         // Nos movemos hacia la posición especificada
-        while (Vector3.Distance(transform.position, downPos) > 0.01f)
+        while (Vector3.Distance(transform.position, downPos.position) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, downPos, moveSpeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, downPos.position, moveSpeed * Time.deltaTime);
             yield return null;
         }
 

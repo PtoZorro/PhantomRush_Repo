@@ -10643,46 +10643,6 @@ ScriptedImporter:
     flatten: 0
     isImported: 1
     isVisible: 1
-  - name: BrazoR
-    spriteName: 
-    isGroup: 1
-    parentIndex: 0
-    spriteID: bf731f43d6377e94093a458cde84850c
-    layerID: 19
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 1
-  - name: Brazo_R
-    spriteName: Brazo_R
-    isGroup: 0
-    parentIndex: 11
-    spriteID: a6ba4ad37f49a4340b363fe07424d0e6
-    layerID: 18
-    mosaicPosition: {x: 314, y: 1581}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
-  - name: "Pu\xF1oR"
-    spriteName: 
-    isGroup: 1
-    parentIndex: 0
-    spriteID: 49ea184694cd26f488d2772c6f6df544
-    layerID: 15
-    mosaicPosition: {x: 0, y: 0}
-    flatten: 0
-    isImported: 0
-    isVisible: 1
-  - name: "Pu\xF1o_R"
-    spriteName: "Pu\xF1o_R"
-    isGroup: 0
-    parentIndex: 13
-    spriteID: 68824900be77a32488496014273c81b0
-    layerID: 14
-    mosaicPosition: {x: 630, y: 176}
-    flatten: 0
-    isImported: 1
-    isVisible: 1
   - name: PiernaL
     spriteName: 
     isGroup: 1
@@ -10696,7 +10656,7 @@ ScriptedImporter:
   - name: Pierna_L
     spriteName: Pierna_L
     isGroup: 0
-    parentIndex: 15
+    parentIndex: 11
     spriteID: 499bc548663c50441919bbf0f1ba9a13
     layerID: 10
     mosaicPosition: {x: 314, y: 1030}
@@ -10716,10 +10676,50 @@ ScriptedImporter:
   - name: Pierna_L
     spriteName: Pierna_L
     isGroup: 0
-    parentIndex: 17
+    parentIndex: 13
     spriteID: 72f253d7c27125746a2300a59e9109de
     layerID: 6
     mosaicPosition: {x: 4, y: 1506}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: BrazoR
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: bf731f43d6377e94093a458cde84850c
+    layerID: 19
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: Brazo_R
+    spriteName: Brazo_R
+    isGroup: 0
+    parentIndex: 15
+    spriteID: a6ba4ad37f49a4340b363fe07424d0e6
+    layerID: 18
+    mosaicPosition: {x: 314, y: 1581}
+    flatten: 0
+    isImported: 1
+    isVisible: 1
+  - name: "Pu\xF1oR"
+    spriteName: 
+    isGroup: 1
+    parentIndex: 0
+    spriteID: 49ea184694cd26f488d2772c6f6df544
+    layerID: 15
+    mosaicPosition: {x: 0, y: 0}
+    flatten: 0
+    isImported: 0
+    isVisible: 1
+  - name: "Pu\xF1o_R"
+    spriteName: "Pu\xF1o_R"
+    isGroup: 0
+    parentIndex: 17
+    spriteID: 68824900be77a32488496014273c81b0
+    layerID: 14
+    mosaicPosition: {x: 630, y: 176}
     flatten: 0
     isImported: 1
     isVisible: 1

@@ -7,6 +7,8 @@ public class EnemyController : MonoBehaviour
     [Header("Stats")]
     [SerializeField] float moveSpeed;
     [SerializeField] int healthRestored;
+
+    [Header("Conditional values")]
     bool inUpZone;
     bool inDownZone;
 

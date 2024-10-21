@@ -32,7 +32,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: JumpAttack
+  m_Name: JumpAttack_Nate
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -58,7 +58,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Ilde
+  m_Name: Run_Nate
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -84,7 +84,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: attack
+  m_Name: FloorAttack_Nate
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -110,7 +110,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DoubleAttack
+  m_Name: DoubleAttack_Nate
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -169,7 +169,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rig_Nate
+  m_Name: Nate_Animator
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Attack

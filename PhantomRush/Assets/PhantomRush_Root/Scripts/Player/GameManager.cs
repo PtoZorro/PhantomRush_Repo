@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     // Declaración de Singleton
     public static GameManager instance;
 
-    [Header("Stats")]
+    [Header("Settings")]
     public int health;
     public int maxHealth;
     public float decreaseHealthSpeed;

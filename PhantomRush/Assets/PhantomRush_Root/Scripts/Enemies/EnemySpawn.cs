@@ -11,7 +11,7 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] Transform downSpawnZone;
     [SerializeField] GameObject[] enemyArray;
 
-    [Header("Stats")]
+    [Header("Settings")]
     [SerializeField] float spawnRate;
     [SerializeField] int enemiesSpawned;
     [SerializeField] int maxEnemiesSpawned;

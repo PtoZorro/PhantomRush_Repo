@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Private References")]
     PlayerInput playerInput;
+    [SerializeField] Animator anim;
     [SerializeField] Transform upPos;
     [SerializeField] Transform midPos;
     [SerializeField] Transform downPos;
@@ -16,10 +17,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] HitSignal hitSignalDown;
 
     [Header("Input")]
-    [SerializeField] float hitRate;
-    [SerializeField] bool upKeyOnWait;
-    [SerializeField] bool downKeyOnWait;
-    [SerializeField] float graceTime;
+    bool upKeyOnWait;
+    bool downKeyOnWait;
     Coroutine startedCoroutine;
     Coroutine canceledCoroutine;
     Coroutine moveUpCoroutine;
@@ -28,19 +27,21 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Stats")]
     [SerializeField] float moveSpeed;
+    [SerializeField] float hitRate;
     [SerializeField] float timeUp;
+    [SerializeField] float graceTime;
 
     [Header("Conditional values")]
-    [SerializeField] bool isUp;
-    [SerializeField] bool isMid;
-    [SerializeField] bool isDown;
     [SerializeField] bool upPressed;
     [SerializeField] bool downPressed;
-    [SerializeField] bool returning;
-    [SerializeField] bool upCoroutineRunning;
-    [SerializeField] bool midCoroutineRunning;
-    [SerializeField] bool downCoroutineRunning;
-    [SerializeField] bool returnCoroutineRunning;
+    bool isUp;
+    bool isMid;
+    bool isDown;
+    bool returning;
+    bool upCoroutineRunning;
+    bool midCoroutineRunning;
+    bool downCoroutineRunning;
+    bool returnCoroutineRunning;
     bool canHit;
     bool avoidHold;
     
@@ -65,6 +66,7 @@ public class PlayerController : MonoBehaviour
         HitMonitoring();
     }
 
+    #region Movement Logic
     void LocationMonitoring()
     {
         // Comprobación si está arriba o abajo
@@ -124,7 +126,7 @@ public class PlayerController : MonoBehaviour
             moveDownCoroutine = StartCoroutine(MovePlayerMid());
         }
         // Si no se está presionando ninguna tecla
-        else if (!upPressed && !downPressed && returning && (isUp || isMid) && !returnCoroutineRunning)
+        else if (!upPressed && !downPressed && returning && !returnCoroutineRunning)
         {
             // Indicamos que Corutinas ya no están en marcha al interrumpirlas
             upCoroutineRunning = false;
@@ -136,7 +138,9 @@ public class PlayerController : MonoBehaviour
             returnCoroutine = StartCoroutine(ReturnPlayer());
         }
     }
+    #endregion
 
+    #region Hits & Animations
     void HitMonitoring()
     {
         // Comprobación de que tecla está pulsada
@@ -149,6 +153,9 @@ public class PlayerController : MonoBehaviour
 
             // Enviamos señal de enemigo golpeado
             if (hitSignalUp.inHitZone) GameManager.instance.upHit = true;
+
+            // Animación de golpeo
+            anim.SetTrigger("airAttack");
         }
         else if (!upPressed && downPressed && canHit && !avoidHold)
         {
@@ -159,6 +166,9 @@ public class PlayerController : MonoBehaviour
 
             // Enviamos señal de enemigo golpeado
             if (hitSignalDown.inHitZone) GameManager.instance.downHit = true;
+
+            // Animación de golpeo
+            anim.SetTrigger("floorAttack");
         }
         else if (upPressed && downPressed && canHit && !avoidHold)
         {
@@ -169,6 +179,9 @@ public class PlayerController : MonoBehaviour
 
             // Enviamos señal de enemigo golpeado
             if (hitSignalUp.inHitZone && hitSignalDown.inHitZone) { GameManager.instance.upHit = true; GameManager.instance.downHit = true; }
+
+            // Animación de golpeo
+            anim.SetTrigger("doubleAttack");
         }
     }
 
@@ -177,7 +190,9 @@ public class PlayerController : MonoBehaviour
         // Reestablecer la posibilidad de golpear
         canHit = true;
     }
+    #endregion 
 
+    #region Movement Execution
     private IEnumerator MovePlayerUp()
     {
         // Corrutina en marcha
@@ -255,8 +270,10 @@ public class PlayerController : MonoBehaviour
         // Corrutina en marcha
         returnCoroutineRunning = false;
     }
+    #endregion
 
-    public void InputMoveUp(InputAction.CallbackContext context)
+    #region Inputs Logic
+    public void InputUp(InputAction.CallbackContext context)
     {
         if (context.started)
         {
@@ -275,18 +292,17 @@ public class PlayerController : MonoBehaviour
         {
             // Bools de estado
             upKeyOnWait = false;
-            upPressed = false;
             avoidHold = false;
 
-            // Bool que manda señal para que el personaje baje al cabo de un tiempo
-            returning = true;
-
             // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
-            if (startedCoroutine == null) StartCoroutine(GracePeriodCanceled());
+            if (canceledCoroutine == null)
+            {
+                canceledCoroutine = StartCoroutine(GracePeriodCanceled());
+            }
         }
     }
 
-    public void InputMoveDown(InputAction.CallbackContext context)
+    public void InputDown(InputAction.CallbackContext context)
     {
         if (context.started)
         {
@@ -304,7 +320,10 @@ public class PlayerController : MonoBehaviour
             avoidHold = false;
 
             // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
-            if (startedCoroutine == null) StartCoroutine(GracePeriodCanceled());
+            if (canceledCoroutine == null)
+            {
+                canceledCoroutine = StartCoroutine(GracePeriodCanceled());
+            }
         }
     }
 
@@ -319,7 +338,8 @@ public class PlayerController : MonoBehaviour
         else if (!upKeyOnWait && downKeyOnWait) { upPressed = upPressed ? true : false; downPressed = true; }
         else { upPressed = false; downPressed = false; }
 
-        // Se devuelven a falso las señales de tecla en espera al acabar la corutina
+        // Corutina finalizada
+        startedCoroutine = null;
     }
 
     IEnumerator GracePeriodCanceled()
@@ -330,5 +350,13 @@ public class PlayerController : MonoBehaviour
         // Según la tecla o las teclas pulsadas pasado el tiempo, daremos las señales correctas
         upPressed = upKeyOnWait ? true : false;
         downPressed = downKeyOnWait ? true : false;
+
+        // Bool que manda señal para que el personaje baje al cabo de un tiempo
+        if (!upPressed && !downPressed) returning = true;
+
+        // Corutina finalizada
+        canceledCoroutine = null;
     }
+
+    #endregion
 }

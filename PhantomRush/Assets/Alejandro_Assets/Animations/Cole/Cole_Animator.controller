@@ -108,7 +108,7 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Rig_cole
+  m_Name: Cole_Animator
   serializedVersion: 5
   m_AnimatorParameters:
   - m_Name: Att
@@ -143,7 +143,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: RunCole
+  m_Name: Run_Cole
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -173,7 +173,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 477308391049956532}
-    m_Position: {x: 270, y: 150, z: 0}
+    m_Position: {x: 240, y: 200, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8155411484441947046}
     m_Position: {x: 290, y: 10, z: 0}

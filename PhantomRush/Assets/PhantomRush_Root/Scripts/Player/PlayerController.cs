@@ -20,7 +20,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] bool upKeyOnWait;
     [SerializeField] bool downKeyOnWait;
     [SerializeField] float graceTime;
-    Coroutine inputCoroutine;
+    Coroutine startedCoroutine;
+    Coroutine canceledCoroutine;
     Coroutine moveUpCoroutine;
     Coroutine moveDownCoroutine;
     Coroutine returnCoroutine;
@@ -31,6 +32,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Conditional values")]
     [SerializeField] bool isUp;
+    [SerializeField] bool isMid;
     [SerializeField] bool isDown;
     [SerializeField] bool upPressed;
     [SerializeField] bool downPressed;
@@ -50,6 +52,8 @@ public class PlayerController : MonoBehaviour
         // Se definen valores de inicio
         canHit = true;
         avoidHold = false;
+        upPressed = false;
+        downPressed = false;
     }
 
     void Update()
@@ -65,6 +69,7 @@ public class PlayerController : MonoBehaviour
     {
         // Comprobación si está arriba o abajo
         isUp = (transform.position.y == upPos.position.y);
+        isMid = (transform.position.y == midPos.position.y);
         isDown = (transform.position.y == downPos.position.y);
 
         // Si la tecla arriba está presionada
@@ -84,7 +89,7 @@ public class PlayerController : MonoBehaviour
             }
         }
         // Si la tecla abajo está presionada
-        else if (downPressed && !downPressed && !downCoroutineRunning)
+        else if (downPressed && !upPressed && !downCoroutineRunning)
         {
             if (!isDown) // Solo mover si no está ya en la posición inferior
             {
@@ -105,24 +110,21 @@ public class PlayerController : MonoBehaviour
         // Si ambas teclas están presionada
         else if (downPressed && upPressed && !midCoroutineRunning)
         {
-            if (!isDown) // Solo mover si no está ya en la posición mediana
-            {
-                // Indicamos que Corutinas ya no están en marcha al interrumpirlas
-                upCoroutineRunning = false;
-                downCoroutineRunning = false;
-                returnCoroutineRunning = false;
+            // Indicamos que Corutinas ya no están en marcha al interrumpirlas
+            upCoroutineRunning = false;
+            downCoroutineRunning = false;
+            returnCoroutineRunning = false;
 
-                // Interrumpimos las corutinas necesarias
-                if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); upCoroutineRunning = false; }
-                if (moveDownCoroutine != null) { StopCoroutine(moveDownCoroutine); downCoroutineRunning = false; }
-                if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
+            // Interrumpimos las corutinas necesarias
+            if (moveUpCoroutine != null) { StopCoroutine(moveUpCoroutine); upCoroutineRunning = false; }
+            if (moveDownCoroutine != null) { StopCoroutine(moveDownCoroutine); downCoroutineRunning = false; }
+            if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
 
-                // Iniciamos corutina de movimiento
-                moveDownCoroutine = StartCoroutine(MovePlayerMid());
-            }
+            // Iniciamos corutina de movimiento
+            moveDownCoroutine = StartCoroutine(MovePlayerMid());
         }
         // Si no se está presionando ninguna tecla
-        else if (!upPressed && !downPressed && returning && isUp && !returnCoroutineRunning)
+        else if (!upPressed && !downPressed && returning && (isUp || isMid) && !returnCoroutineRunning)
         {
             // Indicamos que Corutinas ya no están en marcha al interrumpirlas
             upCoroutineRunning = false;
@@ -247,7 +249,7 @@ public class PlayerController : MonoBehaviour
             yield return null;
         }
 
-        // Dejamos de avisa al dejar de movernos
+        // Dejamos de avisar al dejar de movernos
         returning = false;
 
         // Corrutina en marcha
@@ -262,8 +264,8 @@ public class PlayerController : MonoBehaviour
             upKeyOnWait = true;
 
             // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
-            if (inputCoroutine != null) StopCoroutine(inputCoroutine);
-            inputCoroutine = StartCoroutine(GracePeriod());
+            if (startedCoroutine != null) StopCoroutine(startedCoroutine);
+            startedCoroutine = StartCoroutine(GracePeriodStarted());
 
             // Paramos la corutina de vuelta lo antes posible si hay input
             if (returnCoroutine != null) { StopCoroutine(returnCoroutine); returnCoroutineRunning = false; }
@@ -278,6 +280,9 @@ public class PlayerController : MonoBehaviour
 
             // Bool que manda señal para que el personaje baje al cabo de un tiempo
             returning = true;
+
+            // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
+            if (startedCoroutine == null) StartCoroutine(GracePeriodCanceled());
         }
     }
 
@@ -289,19 +294,21 @@ public class PlayerController : MonoBehaviour
             downKeyOnWait = true;
 
             // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
-            if (inputCoroutine != null) StopCoroutine(inputCoroutine);
-            inputCoroutine = StartCoroutine(GracePeriod());
+            if (startedCoroutine != null) StopCoroutine(startedCoroutine);
+            startedCoroutine = StartCoroutine(GracePeriodStarted());
         }
         else if (context.canceled)
         {
             // Bools de estado
             downKeyOnWait = false;
-            downPressed = false;
             avoidHold = false;
+
+            // Corutina de tiempo de gracia de pulsación de varias teclas a la vez para evitar problemas de lectura
+            if (startedCoroutine == null) StartCoroutine(GracePeriodCanceled());
         }
     }
 
-    IEnumerator GracePeriod()
+    IEnumerator GracePeriodStarted()
     {
         // Esperamos el tiempo de gracia
         yield return new WaitForSeconds(graceTime);
@@ -310,10 +317,18 @@ public class PlayerController : MonoBehaviour
         if (upKeyOnWait && downKeyOnWait) { upPressed = true; downPressed = true; }
         else if (upKeyOnWait && !downKeyOnWait) { upPressed = true; downPressed = downPressed ? true : false; }
         else if (!upKeyOnWait && downKeyOnWait) { upPressed = upPressed ? true : false; downPressed = true; }
+        else { upPressed = false; downPressed = false; }
 
         // Se devuelven a falso las señales de tecla en espera al acabar la corutina
-        upKeyOnWait = false;
-        downKeyOnWait = false;
-        returning = false;
+    }
+
+    IEnumerator GracePeriodCanceled()
+    {
+        // Esperamos el tiempo de gracia
+        yield return new WaitForSeconds(graceTime);
+
+        // Según la tecla o las teclas pulsadas pasado el tiempo, daremos las señales correctas
+        upPressed = upKeyOnWait ? true : false;
+        downPressed = downKeyOnWait ? true : false;
     }
 }

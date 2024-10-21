@@ -326,7 +326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!199 &345693191
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -5716,13 +5716,14 @@ MonoBehaviour:
   hitRate: 0.5
   upKeyOnWait: 0
   downKeyOnWait: 0
-  graceTime: 0.05
+  graceTime: 0.1
   moveSpeed: 100
   timeUp: 0.5
   isUp: 0
+  isMid: 0
   isDown: 0
   upPressed: 0
-  downPressed: 1
+  downPressed: 0
   returning: 0
   upCoroutineRunning: 0
   midCoroutineRunning: 0

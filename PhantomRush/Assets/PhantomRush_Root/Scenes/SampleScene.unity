@@ -230,6 +230,16 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.9988095
       objectReference: {fileID: 0}
+    - target: {fileID: 7766443096098181162, guid: f9f3abbd21344804f9380e9d53991595,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.994345
+      objectReference: {fileID: 0}
+    - target: {fileID: 7766443096098181162, guid: f9f3abbd21344804f9380e9d53991595,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0.1061981
+      objectReference: {fileID: 0}
     - target: {fileID: 8459106002204464788, guid: f9f3abbd21344804f9380e9d53991595,
         type: 3}
       propertyPath: m_LocalRotation.w
@@ -5638,7 +5648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d54531977ecb194c95e2d3aa7a5d72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ControlPath: <Keyboard>/x
+  m_ControlPath: <Gamepad>/rightShoulder
 --- !u!114 &693928666
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5842,10 +5852,10 @@ MonoBehaviour:
   downPos: {fileID: 1515529811}
   hitSignalUp: {fileID: 602338899}
   hitSignalDown: {fileID: 1695058764}
-  moveSpeed: 100
+  moveSpeed: 75
   hitRate: 0.5
   timeUp: 0.5
-  graceTime: 0.05
+  graceTime: 0.03
   upPressed: 0
   downPressed: 0
 --- !u!114 &879663041
@@ -6115,7 +6125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d54531977ecb194c95e2d3aa7a5d72a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ControlPath: <Keyboard>/z
+  m_ControlPath: <Gamepad>/leftShoulder
 --- !u!114 &979489239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6530,7 +6540,7 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
   m_SortingOrder: 0

@@ -5481,8 +5481,8 @@ Transform:
   m_GameObject: {fileID: 602338895}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 7.75, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalPosition: {x: 4.25, y: 7.75, z: 0}
+  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 885231330}
@@ -5853,9 +5853,9 @@ MonoBehaviour:
   hitSignalUp: {fileID: 602338899}
   hitSignalDown: {fileID: 1695058764}
   moveSpeed: 75
-  hitRate: 0.5
+  hitRate: 0.25
   timeUp: 0.5
-  graceTime: 0.03
+  graceTime: 0.05
   upPressed: 0
   downPressed: 0
 --- !u!114 &879663041
@@ -6200,8 +6200,9 @@ MonoBehaviour:
   downSpawnZone: {fileID: 964746251}
   enemyArray: []
   spawnRate: 1
+  spacing: 3.5
   enemiesSpawned: 0
-  maxEnemiesSpawned: 10
+  maxEnemiesSpawned: 30
   enemySelected: 0
 --- !u!4 &1044547373
 Transform:
@@ -6748,8 +6749,8 @@ Transform:
   m_GameObject: {fileID: 1695058760}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.5, y: 1.75, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
+  m_LocalPosition: {x: 4.25, y: 1.75, z: 0}
+  m_LocalScale: {x: 1.75, y: 1.75, z: 1.75}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 885231330}

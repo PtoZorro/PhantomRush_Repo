@@ -17,6 +17,7 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] int enemiesSpawned;
     [SerializeField] int maxEnemiesSpawned;
     [SerializeField] int enemySelected;
+    [SerializeField] int minEnemiesPattern;
 
     [Header("Conditional Values")]
     bool canSpawn;
@@ -65,7 +66,7 @@ public class EnemySpawn : MonoBehaviour
     void Pool()
     {
         // Randomizamos la posición de aparición de enemigos e instanciamos
-        int randomValue = Random.Range(0, 8);  // Aumentado para más patrones
+        int randomValue = Random.Range(minEnemiesPattern, 8);  // Aumentado para más patrones
 
         // Cuando el contador de enemigos llegue al final volvemos a 0;
         enemySelected = enemySelected >= maxEnemiesSpawned ? 0 : enemySelected;

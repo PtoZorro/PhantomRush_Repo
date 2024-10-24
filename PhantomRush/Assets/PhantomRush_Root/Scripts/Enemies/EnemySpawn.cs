@@ -11,13 +11,18 @@ public class EnemySpawn : MonoBehaviour
     [SerializeField] Transform downSpawnZone;
     [SerializeField] GameObject[] enemyArray;
 
-    [Header("Settings")]
-    [SerializeField] float spawnRate;
-    [SerializeField] float spacing;
+    [Header("EnemyArraySettings")]
     [SerializeField] int enemiesSpawned;
     [SerializeField] int maxEnemiesSpawned;
     [SerializeField] int enemySelected;
-    [SerializeField] int minEnemiesPattern;
+
+    [Header("Settings")]
+    [SerializeField] float spawnRate;
+    [SerializeField] float spacing;
+    [SerializeField] int minPattern;
+    [SerializeField] int maxPattern;
+    [SerializeField] int minEnemiesInPattern;
+    [SerializeField] int maxEnemiesInPattern;
 
     [Header("Conditional Values")]
     bool canSpawn;
@@ -66,129 +71,84 @@ public class EnemySpawn : MonoBehaviour
     void Pool()
     {
         // Randomizamos la posición de aparición de enemigos e instanciamos
-        int randomValue = Random.Range(minEnemiesPattern, 8);  // Aumentado para más patrones
+        int randomPattern = Random.Range(minPattern, maxPattern + 1);  // Aumentado para más patrones
+
+        // Randomizamos el número máximo de enemigos que aparecerán a la vez en una altura
+        int enemiesInPatern = Random.Range(minEnemiesInPattern, maxEnemiesInPattern + 1);
+
+        // Randomizamos altura a la que spawnearan
+        Transform spawnZone = Random.Range(0, 2) == 0 ? upSpawnZone: downSpawnZone; // Randomizamos altura a la que spawnearan
 
         // Cuando el contador de enemigos llegue al final volvemos a 0;
         enemySelected = enemySelected >= maxEnemiesSpawned ? 0 : enemySelected;
 
-        if (randomValue == 0)
+        // escogemos el patron
+        switch (randomPattern)
         {
-            // Patrones simples: uno arriba
-            SpawnSingleEnemy(upSpawnZone);
-        }
-        else if (randomValue == 1)
-        {
-            // Patrones simples: uno abajo
-            SpawnSingleEnemy(downSpawnZone);
-        }
-        else if (randomValue == 2)
-        {
-            // Patrones de dos enemigos: uno arriba y uno abajo
-            SpawnDoubleEnemies();
-        }
-        else if (randomValue == 3)
-        {
-            // Patrones de dos enemigos seguidos en la misma altura
-            SpawnConsecutiveEnemies(2);
-        }
-        else if (randomValue == 4)
-        {
-            // Patrones de tres enemigos seguidos en la misma altura
-            SpawnConsecutiveEnemies(3);
-        }
-        else if (randomValue == 5)
-        {
-            // Patrones de cuatro enemigos seguidos en la misma altura
-            SpawnConsecutiveEnemies(4);
-        }
-        else if (randomValue == 6)
-        {
-            // Patrones de dos enemigos consecutivos en ambas alturas
-            SpawnConsecutiveEnemiesInBothZones(2);
-        }
-        else if (randomValue == 7)
-        {
-            // Patrones de tres enemigos consecutivos en ambas alturas
-            SpawnConsecutiveEnemiesInBothZones(3);
+            case 0:
+                // Patron un enemigo
+                SpawnSingleEnemy(spawnZone);
+                break;
+            case 1:
+                // Patron de dos enemigos: uno arriba y uno abajo
+                SpawnSingleEnemy(upSpawnZone);
+                SpawnSingleEnemy(downSpawnZone);
+                break;
+            case 2:
+                // Patron de más de un enemigo en una altura
+                SpawnConsecutiveEnemies(enemiesInPatern, spawnZone);
+                break;
+            case 3:
+                // Patron de número de enemigos distinto en ambas alturas
+                SpawnMixedEnemies();
+                break;
+            default:
+                Debug.LogWarning("Patrón de enemigo inesperado: " + randomPattern);
+                break;
         }
     }
+
 
     // Método para spawnear un enemigo en una posición específica
     void SpawnSingleEnemy(Transform spawnZone)
     {
+        // Cuando el contador de enemigos llegue al último, vuelve a 0 para repetir
+        if (enemySelected >= maxEnemiesSpawned) enemySelected = 0;
+
         // Reactivamos y posicionamos el enemigo seleccionado 
         enemyArray[enemySelected].SetActive(true);
         enemyArray[enemySelected].transform.position = spawnZone.position;
         enemySelected++;
     }
 
-    // Método para spawnear dos enemigos, uno arriba y uno abajo
-    void SpawnDoubleEnemies()
+    // Método general para spawnear varios enemigos consecutivos en una sola zona con desplazamiento
+    void SpawnConsecutiveEnemies(int count, Transform spawnZone)
     {
-        // Reactivamos y posicionamos el enemigo seleccionado arriba
-        SpawnSingleEnemy(upSpawnZone);
-
-        // Comprobamos si hemos sobrepasado el número máximo de enemigos
-        if (enemySelected < maxEnemiesSpawned)
-        {
-            // Reactivamos y posicionamos el enemigo seleccionado abajo
-            SpawnSingleEnemy(downSpawnZone);
-        }
-    }
-
-    // Método para spawnear varios enemigos consecutivos en la misma altura
-    void SpawnConsecutiveEnemies(int count)
-    {
-        // Elegimos aleatoriamente si los enemigos aparecerán arriba o abajo
-        Transform spawnZone = (Random.Range(0, 2) == 0) ? upSpawnZone : downSpawnZone;
-
-        // Guardamos la posición base inicial para el primer enemigo
         Vector3 basePosition = spawnZone.position;
 
         for (int i = 0; i < count; i++)
         {
-            if (enemySelected < maxEnemiesSpawned)
-            {
-                // Reactivamos y posicionamos el enemigo con un desplazamiento
-                enemyArray[enemySelected].SetActive(true);
+            // Cuando el contador de enemigos llegue al último, vuelve a 0 para repetir
+            if (enemySelected >= maxEnemiesSpawned) enemySelected = 0;
 
-                // Añadimos un desplazamiento aleatorio basado en el eje X para evitar solapamiento
-                Vector3 offsetPosition = basePosition + new Vector3(spacing * i, 0, 0);
-
-                enemyArray[enemySelected].transform.position = offsetPosition;
-                enemySelected++;
-            }
+            // Reactivamos y posicionamos el enemigo con un desplazamiento
+            enemyArray[enemySelected].SetActive(true);
+            Vector3 offsetPosition = basePosition + new Vector3(spacing * i, 0, 0);
+            enemyArray[enemySelected].transform.position = offsetPosition;
+            enemySelected++;
         }
     }
 
-    // Método para spawnear varios enemigos consecutivos en ambas alturas
-    void SpawnConsecutiveEnemiesInBothZones(int count)
+    // Método para spawnear una cantidad variable de enemigos arriba y abajo, con desplazamiento
+    void SpawnMixedEnemies()
     {
-        // Guardamos las posiciones base iniciales para los enemigos
-        Vector3 upBasePosition = upSpawnZone.position;
-        Vector3 downBasePosition = downSpawnZone.position;
+        // Randomizamos la cantidad de enemigos que aparecerán en cada zona (entre 1 y 4)
+        int upCount = Random.Range(1, 5);
+        int downCount = Random.Range(1, 5);
 
-        for (int i = 0; i < count; i++)
-        {
-            if (enemySelected < maxEnemiesSpawned)
-            {
-                // Spawnear enemigo arriba
-                enemyArray[enemySelected].SetActive(true);
-                Vector3 upOffsetPosition = upBasePosition + new Vector3(spacing * i, 0, 0);
-                enemyArray[enemySelected].transform.position = upOffsetPosition;
-                enemySelected++;
-
-                // Comprobamos si hay espacio para el enemigo abajo
-                if (enemySelected < maxEnemiesSpawned)
-                {
-                    // Spawnear enemigo abajo
-                    enemyArray[enemySelected].SetActive(true);
-                    Vector3 downOffsetPosition = downBasePosition + new Vector3(spacing * i, 0, 0);
-                    enemyArray[enemySelected].transform.position = downOffsetPosition;
-                    enemySelected++;
-                }
-            }
-        }
+        // Llamamos al método general para spawnear los enemigos en la zona superior e inferior
+        SpawnConsecutiveEnemies(upCount, upSpawnZone);
+        SpawnConsecutiveEnemies(downCount, downSpawnZone);
     }
 
     void RestartSpawn()
@@ -197,6 +157,3 @@ public class EnemySpawn : MonoBehaviour
         canSpawn = true;
     }
 }
-
-
-

@@ -5855,7 +5855,7 @@ MonoBehaviour:
   moveSpeed: 75
   hitRate: 0.25
   timeUp: 0.5
-  graceTime: 0.05
+  graceTime: 0.1
   upPressed: 0
   downPressed: 0
 --- !u!114 &879663041
@@ -6199,12 +6199,15 @@ MonoBehaviour:
   upSpawnZone: {fileID: 888693655}
   downSpawnZone: {fileID: 964746251}
   enemyArray: []
-  spawnRate: 2
-  spacing: 5
   enemiesSpawned: 0
-  maxEnemiesSpawned: 30
+  maxEnemiesSpawned: 15
   enemySelected: 0
-  minEnemiesPattern: 3
+  spawnRate: 1.75
+  spacing: 5
+  minPattern: 2
+  maxPattern: 3
+  minEnemiesInPattern: 2
+  maxEnemiesInPattern: 4
 --- !u!4 &1044547373
 Transform:
   m_ObjectHideFlags: 0
@@ -6214,7 +6217,7 @@ Transform:
   m_GameObject: {fileID: 1044547371}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 15, y: -4.25, z: 0}
+  m_LocalPosition: {x: 15, y: -5.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

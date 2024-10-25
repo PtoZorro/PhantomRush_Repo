@@ -29,7 +29,7 @@ Transform:
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7365751416313729885}
+  - {fileID: 2611519949626738641}
   m_Father: {fileID: 3852700681767695534}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1833106218548238211
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 6536286777608032141}
   - component: {fileID: 3577164949085695681}
   m_Layer: 6
-  m_Name: Yurei_Enemy
+  m_Name: Hachi_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153,7 +153,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 0
---- !u!1001 &3074666726119482464
+--- !u!1001 &3225849235060268540
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -161,84 +161,89 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5595036248160921332}
     m_Modifications:
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalScale.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 6.53
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2
+      value: -0.59
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalRotation.x
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalRotation.y
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalRotation.z
       value: -0
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6654938366220316510, guid: 6f75a67eb4b63344a9646d3263754174,
+    - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1743287315124044366, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_Name
-      value: Yurei
+      value: Hachi
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6f75a67eb4b63344a9646d3263754174, type: 3}
---- !u!4 &7365751416313729885 stripped
+  m_SourcePrefab: {fileID: 100100000, guid: 7cd63142c83328f47a332780948c48fa, type: 3}
+--- !u!4 &2611519949626738641 stripped
 Transform:
-  m_CorrespondingSourceObject: {fileID: 5517770442278270781, guid: 6f75a67eb4b63344a9646d3263754174,
+  m_CorrespondingSourceObject: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
     type: 3}
-  m_PrefabInstance: {fileID: 3074666726119482464}
+  m_PrefabInstance: {fileID: 3225849235060268540}
   m_PrefabAsset: {fileID: 0}

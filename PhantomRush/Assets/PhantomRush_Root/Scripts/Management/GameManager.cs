@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     // Declaración de Singleton
     public static GameManager instance;
 
-    [Header("Settings")]
+    [Header("health Settings")]
     public int health;
     public int maxHealth;
     public float decreaseHealthSpeed;
@@ -17,6 +19,18 @@ public class GameManager : MonoBehaviour
     public bool upHit;
     public bool downHit;
 
+    [Header("Conditional Values")]
+    int sceneNumber;
+    public bool firstLvl;
+    public bool secondLvl;
+    public bool thirdLvl;
+    public bool boss;
+    bool timerStarted;
+
+    [Header("Timer")]
+    public float timeElapsed;
+    [SerializeField] int lvlTime;
+
     void Awake()
     {
         // Verifica si ya existe una instancia del GameManager
@@ -24,6 +38,9 @@ public class GameManager : MonoBehaviour
         {
             instance = this; // Si no, asignamos esta como la instancia única
             DontDestroyOnLoad(gameObject); // Evitar que se destruya al cambiar de escena
+
+            // Suscribirse al evento de cambio de escena, lo que hará que cada vez que cambiamos de escena, se ejecute la función indicada
+            SceneManager.sceneLoaded += OnSceneLoaded;
         }
         else
         {
@@ -37,6 +54,7 @@ public class GameManager : MonoBehaviour
         // Se definen valores de inicio
         health = maxHealth;
         healthModified = maxHealth;
+        timeElapsed = 0;
     }
 
     private void Update()
@@ -46,6 +64,9 @@ public class GameManager : MonoBehaviour
 
         // Monitoreo de salud
         HealthMonitoring();
+
+        // Una vez comenzado el gameplay se inicia un temporizador
+        if (firstLvl || timerStarted) Timer();
     }
 
     void HealthMonitoring()
@@ -61,9 +82,41 @@ public class GameManager : MonoBehaviour
 
     void HitInteraction()
     {
-        // Depende de donde golpeamos, mandamos una o dos señales
+        // Depende de donde golpeamos, mandamos señales
         if (upHit && !downHit) { Debug.Log("Up Enemy Hitted"); upHit = false; }
         else if (!upHit && downHit) { Debug.Log("Down Enemy Hitted"); downHit = false; }
         else if (upHit && downHit) { Debug.Log("Both Enemies Hitted"); upHit = false; downHit = false; }
+    }
+
+    void Timer()
+    {
+        // Indicamos que ha empezado el temportizador para que no se pare una vez haya comenzado
+        timerStarted = true;
+
+        // Se almacena el timepo transcurrido
+        timeElapsed += Time.deltaTime;
+
+        if (timeElapsed >= lvlTime && !boss)
+        {
+            BossEnter();
+        }
+    }
+
+    void BossEnter()
+    {
+        boss = true;
+
+
+    }
+
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Almacenamos el número de escena
+        sceneNumber = scene.buildIndex;
+
+        // Indicamos en que nivel nos encontramos
+        firstLvl = scene.name == "level1" ? true : false;
+        secondLvl = scene.name == "level2" ? true : false;
+        thirdLvl = scene.name == "level3" ? true : false;
     }
 }

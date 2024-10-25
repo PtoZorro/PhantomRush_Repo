@@ -774,7 +774,7 @@ PrefabInstance:
     - target: {fileID: 590816992581205576, guid: e903fd0d301bd06409c8d8a50deb8529,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1800060206497556011, guid: e903fd0d301bd06409c8d8a50deb8529,
         type: 3}
@@ -1185,6 +1185,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Yurei
+      objectReference: {fileID: 0}
+    - target: {fileID: 6654938366220316510, guid: 6f75a67eb4b63344a9646d3263754174,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2000,7 +2005,7 @@ PrefabInstance:
     - target: {fileID: 8635512047544977364, guid: f9f3abbd21344804f9380e9d53991595,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9008775366481826899, guid: f9f3abbd21344804f9380e9d53991595,
         type: 3}

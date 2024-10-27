@@ -4,25 +4,37 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    [Header("References")]
+    Transform bossPosition;
+    Vector3 initialDirection;
+    [SerializeField] SpriteRenderer spriteRenderer;
+
     [Header("Stats")]
     [SerializeField] float moveSpeed;
+    [SerializeField] float returnSpeed;
     [SerializeField] int healthRestored;
+    [SerializeField] bool isBullet;
 
     [Header("Conditional values")]
     bool inUpZone;
     bool inDownZone;
+    bool bulletReturn;
 
     private void Start()
     {
         // Se definen valores de inicio
         inUpZone = false;
         inDownZone = false;
+        bulletReturn = false;
+        bossPosition = GameObject.Find("BossBulletTarget").transform;
+        initialDirection = Vector3.left;
     }
 
     void Update()
     {
-        // Movimiento constante
-        Movement();
+        // Movimiento constante o si ha sido golpeado se devuelve hacia el boss
+        if (!bulletReturn) Movement();
+        else BulletReturn();
 
         // Monitoreo de cuando es golpeado
         Hitted();
@@ -31,7 +43,7 @@ public class EnemyController : MonoBehaviour
     void Movement()
     {
         // Mover el objeto a una velocidad constante en la dirección negativa del eje X
-        transform.Translate(Vector3.left * moveSpeed * Time.deltaTime);
+        transform.Translate(initialDirection * moveSpeed * Time.deltaTime);
     }
 
     void Hitted()
@@ -41,14 +53,34 @@ public class EnemyController : MonoBehaviour
         {
             inUpZone = false;
             GameManager.instance.healthModified += healthRestored;
-            gameObject.SetActive(false);
+
+            if (!isBullet) gameObject.SetActive(false);
+            else bulletReturn = true;
         }
         else if (inDownZone && GameManager.instance.downHit)
         {
             inDownZone = false;
             GameManager.instance.healthModified += healthRestored;
-            gameObject.SetActive(false);
+
+            if (!isBullet) gameObject.SetActive(false);
+            else bulletReturn = true;
         }
+    }
+
+    void BulletReturn()
+    {
+        // Definimos la posición en el plano 2D, ignorando la coordenada Z del boss
+        Vector3 bossPosition2D = new Vector3(bossPosition.position.x, bossPosition.position.y, transform.position.z);
+
+        // Hacemos que la bala mire hacia la posición del boss en 2D
+        Vector3 directionToBoss = (bossPosition2D - transform.position).normalized;
+        transform.right = directionToBoss;
+
+        // Giramos solo el sprite de la bala
+        spriteRenderer.flipX = true;
+
+        // Movemos la bala hacia el boss con una velocidad constante
+        transform.position = Vector3.MoveTowards(transform.position, bossPosition2D, returnSpeed * Time.deltaTime);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -58,16 +90,23 @@ public class EnemyController : MonoBehaviour
         {
             inUpZone = true;
         }
-        if (other.gameObject.layer == LayerMask.NameToLayer("DownHitZone"))
+        else if (other.gameObject.layer == LayerMask.NameToLayer("DownHitZone"))
         {
             inDownZone = true;
         }
         // Si entra en la zona límite se desactiva
         else if (other.gameObject.layer == LayerMask.NameToLayer("DestroyZone"))
         {
-            inUpZone = false;
-            inDownZone = false;
             gameObject.SetActive(false);
+        }
+
+        // En caso de ser un Bullet del boss
+        if (other.gameObject.layer == LayerMask.NameToLayer("Boss") && bulletReturn)
+        {
+            bulletReturn = false;
+
+            //Dejamos la bala con la configuración original
+            ResetBullet();
         }
     }
 
@@ -82,5 +121,16 @@ public class EnemyController : MonoBehaviour
         {
             inDownZone = false;
         }
+    }
+
+    void ResetBullet()
+    {
+        bulletReturn = false;
+        spriteRenderer.flipX = false;
+
+        // Restablecemos la dirección inicial
+        transform.right = -initialDirection;
+
+        gameObject.SetActive(false);
     }
 }

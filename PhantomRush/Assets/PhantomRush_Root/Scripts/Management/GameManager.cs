@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -30,6 +29,10 @@ public class GameManager : MonoBehaviour
     [Header("Timer")]
     public float timeElapsed;
     [SerializeField] int lvlTime;
+
+    [Header("EnemySettings")]
+    public GameObject[] enemyType;
+    public int enemyIndex;
 
     void Awake()
     {
@@ -115,8 +118,13 @@ public class GameManager : MonoBehaviour
         sceneNumber = scene.buildIndex;
 
         // Indicamos en que nivel nos encontramos
-        firstLvl = scene.name == "level1" ? true : false;
-        secondLvl = scene.name == "level2" ? true : false;
-        thirdLvl = scene.name == "level3" ? true : false;
+        firstLvl = scene.name == "Level1" ? true : false;
+        secondLvl = scene.name == "Level2" ? true : false;
+        thirdLvl = scene.name == "Level3" ? true : false;
+
+        // Indicamos a partir de que número del array de enemigos debemos fijarnos dependiendo del nivel
+        if (firstLvl) enemyIndex = 0;
+        if (secondLvl) enemyIndex = 4;
+        if (thirdLvl) enemyIndex = 8;
     }
 }

@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 804908002529697170}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2.59, y: -0.25, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 6536286777608032141}
   - component: {fileID: 3577164949085695681}
   m_Layer: 6
-  m_Name: Hachi_Enemy
+  m_Name: Lv2_Hachi_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80,7 +80,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 17.5
+  returnSpeed: 30
   healthRestored: 50
+  isBullet: 0
 --- !u!61 &6536286777608032141
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -179,12 +181,12 @@ PrefabInstance:
     - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.53
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.59
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 646687966368012845, guid: 7cd63142c83328f47a332780948c48fa,
         type: 3}

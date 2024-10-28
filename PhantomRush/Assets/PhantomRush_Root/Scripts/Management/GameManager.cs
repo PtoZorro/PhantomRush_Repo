@@ -33,6 +33,8 @@ public class GameManager : MonoBehaviour
     [Header("EnemySettings")]
     public GameObject[] enemyType;
     public int enemyIndex;
+    public int bossHealth;
+    public int maxBossHealth;
 
     void Awake()
     {
@@ -108,7 +110,10 @@ public class GameManager : MonoBehaviour
 
     void BossEnter()
     {
+        // Indicamos que el boss esta activado
         boss = true;
+
+        bossHealth = maxBossHealth;
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

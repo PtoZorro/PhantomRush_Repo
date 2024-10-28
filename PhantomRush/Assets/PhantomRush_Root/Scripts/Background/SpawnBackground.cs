@@ -26,9 +26,6 @@ public class SpawnBackground : MonoBehaviour
 
         // Spawn inicial de todos los módulos
         Spawn();
-
-        // Obtenemos el ancho en el eje X de un módulo
-        //moduleLenght = meshRenderer.bounds.size.x;
     }
 
     void Update()

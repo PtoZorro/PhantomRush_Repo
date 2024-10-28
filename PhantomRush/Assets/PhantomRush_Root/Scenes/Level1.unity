@@ -350,7 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 0
   maxHealth: 1000
-  decreaseHealthSpeed: 150
+  decreaseHealthSpeed: 75
   healthModified: 0
   upHit: 0
   downHit: 0
@@ -359,7 +359,7 @@ MonoBehaviour:
   thirdLvl: 0
   boss: 0
   timeElapsed: 0
-  lvlTime: 60
+  lvlTime: 10
   enemyType:
   - {fileID: 1833106218548238211, guid: f2dbbdc213635834d833eb52e4fd09eb, type: 3}
   - {fileID: 1833106218548238211, guid: ba3ee803d70514a41906c89b3255208e, type: 3}
@@ -374,6 +374,8 @@ MonoBehaviour:
   - {fileID: 1833106218548238211, guid: 7c2f39e4d5cfdfb4495a6c0e0c805e1e, type: 3}
   - {fileID: 1833106218548238211, guid: 9bee8a8af77bd1144b4cea48e718a8a3, type: 3}
   enemyIndex: 0
+  bossHealth: 0
+  maxBossHealth: 100
 --- !u!4 &202477987
 Transform:
   m_ObjectHideFlags: 0

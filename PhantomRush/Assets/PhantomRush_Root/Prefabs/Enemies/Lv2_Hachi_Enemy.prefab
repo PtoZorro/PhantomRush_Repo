@@ -83,7 +83,9 @@ MonoBehaviour:
   moveSpeed: 13.5
   returnSpeed: 30
   healthRestored: 50
+  healthTaken: 50
   isBullet: 0
+  isTrap: 1
 --- !u!61 &6536286777608032141
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -13,7 +13,10 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float moveSpeed;
     [SerializeField] float returnSpeed;
     [SerializeField] int healthRestored;
+    [SerializeField] int healthTaken;
+    [SerializeField] int damageToBoss;
     [SerializeField] bool isBullet;
+    [SerializeField] bool isTrap;
 
     [Header("Conditional values")]
     bool inUpZone;
@@ -52,7 +55,11 @@ public class EnemyController : MonoBehaviour
         if (inUpZone && GameManager.instance.upHit)
         {
             inUpZone = false;
-            GameManager.instance.healthModified += healthRestored;
+
+            // Si es un enemigo normal se suma salud, si es enemigo trampa se resta
+            if (!isTrap) GameManager.instance.healthModified += healthRestored;
+            else GameManager.instance.healthModified -= healthTaken;
+
 
             if (!isBullet) gameObject.SetActive(false);
             else bulletReturn = true;
@@ -60,7 +67,10 @@ public class EnemyController : MonoBehaviour
         else if (inDownZone && GameManager.instance.downHit)
         {
             inDownZone = false;
-            GameManager.instance.healthModified += healthRestored;
+
+            // Si es un enemigo normal se suma salud, si es enemigo trampa se resta
+            if (!isTrap) GameManager.instance.healthModified += healthRestored;
+            else GameManager.instance.healthModified -= healthTaken;
 
             if (!isBullet) gameObject.SetActive(false);
             else bulletReturn = true;
@@ -104,6 +114,8 @@ public class EnemyController : MonoBehaviour
         if (other.gameObject.layer == LayerMask.NameToLayer("Boss") && bulletReturn)
         {
             bulletReturn = false;
+
+            GameManager.instance.bossHealth -= damageToBoss;
 
             //Dejamos la bala con la configuración original
             ResetBullet();

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [Header("Private References")]
     PlayerInput playerInput;
     [SerializeField] Animator anim;
+    [SerializeField] Animator batAnim;
     [SerializeField] Transform upPos;
     [SerializeField] Transform midPos;
     [SerializeField] Transform downPos;
@@ -32,6 +33,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float graceTime;
 
     [Header("Conditional values")]
+    [SerializeField] bool isKathy;
     [SerializeField] bool upPressed;
     [SerializeField] bool downPressed;
     bool isUp;
@@ -156,6 +158,7 @@ public class PlayerController : MonoBehaviour
 
             // Animación de golpeo
             anim.SetTrigger("airAttack");
+            if (isKathy) batAnim.SetTrigger("attack");
         }
         else if (!upPressed && downPressed && canHit && !avoidHold)
         {
@@ -169,6 +172,7 @@ public class PlayerController : MonoBehaviour
 
             // Animación de golpeo
             anim.SetTrigger("floorAttack");
+            if (isKathy) batAnim.SetTrigger("attack");
         }
         else if (upPressed && downPressed && canHit && !avoidHold)
         {
@@ -182,6 +186,7 @@ public class PlayerController : MonoBehaviour
 
             // Animación de golpeo
             anim.SetTrigger("doubleAttack");
+            if (isKathy) batAnim.SetTrigger("attack");
         }
     }
 

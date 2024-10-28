@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour
         // Se almacena el timepo transcurrido
         timeElapsed += Time.deltaTime;
 
+        // Activamos el Boss pasado el tiempo establecido
         if (timeElapsed >= lvlTime && !boss)
         {
             BossEnter();
@@ -108,8 +109,6 @@ public class GameManager : MonoBehaviour
     void BossEnter()
     {
         boss = true;
-
-
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)

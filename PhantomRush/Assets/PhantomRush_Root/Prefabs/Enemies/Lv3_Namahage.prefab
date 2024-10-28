@@ -47,7 +47,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd25104bf2d90ef4bb3085f107b13510, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 17.5
+  spriteRenderer: {fileID: 0}
+  moveSpeed: 13.5
   returnSpeed: 30
   healthRestored: 50
   isBullet: 0

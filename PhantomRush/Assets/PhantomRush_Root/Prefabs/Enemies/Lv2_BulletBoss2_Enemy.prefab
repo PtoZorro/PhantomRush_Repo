@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 5890354506076662742}
-  moveSpeed: 17.5
+  moveSpeed: 13.5
   returnSpeed: 50
   healthRestored: 50
   isBullet: 1

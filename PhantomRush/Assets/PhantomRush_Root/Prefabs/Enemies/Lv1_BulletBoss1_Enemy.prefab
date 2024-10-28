@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 729425600389551560}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.65, z: 0}
+  m_LocalPosition: {x: 0.445, y: -0.7, z: 0}
   m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -80,7 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 7941931102125535905}
-  moveSpeed: 17.5
+  moveSpeed: 13.5
   returnSpeed: 50
   healthRestored: 50
   isBullet: 1

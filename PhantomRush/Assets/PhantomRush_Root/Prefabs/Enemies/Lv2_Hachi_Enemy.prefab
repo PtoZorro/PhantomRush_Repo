@@ -82,8 +82,9 @@ MonoBehaviour:
   spriteRenderer: {fileID: 0}
   moveSpeed: 13.5
   returnSpeed: 30
-  healthRestored: 50
+  healthRestored: 100
   healthTaken: 50
+  damageToBoss: 0
   isBullet: 0
   isTrap: 1
 --- !u!61 &6536286777608032141

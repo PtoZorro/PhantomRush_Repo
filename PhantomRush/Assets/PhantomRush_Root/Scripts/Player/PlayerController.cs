@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     PlayerInput playerInput;
     [SerializeField] Animator anim;
     [SerializeField] Animator batAnim;
+    [SerializeField] Animator upHitAnim;
+    [SerializeField] Animator downHitAnim;
     [SerializeField] Transform upPos;
     [SerializeField] Transform midPos;
     [SerializeField] Transform downPos;
@@ -158,6 +160,7 @@ public class PlayerController : MonoBehaviour
 
             // Animación de golpeo
             anim.SetTrigger("airAttack");
+            upHitAnim.SetTrigger("attack");
             if (isKathy) batAnim.SetTrigger("attack");
         }
         else if (!upPressed && downPressed && canHit && !avoidHold)
@@ -172,6 +175,7 @@ public class PlayerController : MonoBehaviour
 
             // Animación de golpeo
             anim.SetTrigger("floorAttack");
+            downHitAnim.SetTrigger("attack");
             if (isKathy) batAnim.SetTrigger("attack");
         }
         else if (upPressed && downPressed && canHit && !avoidHold)
@@ -186,6 +190,8 @@ public class PlayerController : MonoBehaviour
 
             // Animación de golpeo
             anim.SetTrigger("doubleAttack");
+            upHitAnim.SetTrigger("attack");
+            downHitAnim.SetTrigger("attack");
             if (isKathy) batAnim.SetTrigger("attack");
         }
     }

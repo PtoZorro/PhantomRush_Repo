@@ -136,7 +136,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 1786}
     spritePosition: {x: 1840, y: 1644}
-  - name: Layer 21
+  - name: PauseButton
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -157,7 +157,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 147, y: 1952}
     spritePosition: {x: 1864, y: 1517}
-  - name: Layer 41
+  - name: Boss1
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -178,7 +178,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 264, y: 1099}
     spritePosition: {x: 1387, y: 1790}
-  - name: Layer 23
+  - name: Boss2
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -199,7 +199,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 1311}
     spritePosition: {x: 1563, y: 1790}
-  - name: Layer 22
+  - name: Boss3
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -220,7 +220,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 1099}
     spritePosition: {x: 1103, y: 1790}
-  - name: Layer 20
+  - name: BossHealthEmpty
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -241,7 +241,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 478, y: 546}
     spritePosition: {x: 287, y: 1670}
-  - name: Layer 37
+  - name: BossHealth_Left
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -250,7 +250,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 478
       y: 659
-      width: 1473
+      width: 736
       height: 44
     spriteID: 45d1b030b8f94e4429a7185c228ac938
     spriteBone: []
@@ -262,7 +262,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 478, y: 659}
     spritePosition: {x: 304, y: 1600}
-  - name: Layer 13
+  - name: ComboUp
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -283,7 +283,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 1482}
     spritePosition: {x: 1805, y: 1363}
-  - name: Capa 3
+  - name: ComboDown
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -325,7 +325,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 1952}
     spritePosition: {x: 1288, y: 1444}
-  - name: Layer 12
+  - name: HealthEmpty
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -346,7 +346,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 918, y: 4}
     spritePosition: {x: 374, y: 1388}
-  - name: Capa 4
+  - name: Health
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -367,7 +367,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 918, y: 131}
     spritePosition: {x: 688, y: 1309}
-  - name: Capa 10
+  - name: ColeName
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -388,7 +388,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 264, y: 1409}
     spritePosition: {x: 142, y: 1500}
-  - name: Capa 7
+  - name: ColeIcon
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -409,7 +409,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 167, y: 1786}
     spritePosition: {x: 49, y: 1504}
-  - name: Capa 9
+  - name: NateName
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -430,7 +430,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 264, y: 1524}
     spritePosition: {x: 141, y: 1340}
-  - name: Capa 4
+  - name: NateIcon
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -451,7 +451,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 167, y: 1620}
     spritePosition: {x: 49, y: 1342}
-  - name: Capa 8
+  - name: KathyName
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -472,7 +472,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 264, y: 1469}
     spritePosition: {x: 159, y: 1183}
-  - name: Capa 1
+  - name: KathyIcon
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -514,7 +514,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 1683, y: 4}
     spritePosition: {x: 376, y: 1390}
-  - name: Layer 14
+  - name: ConfigButton
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -535,7 +535,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 546}
     spritePosition: {x: 574, y: 604}
-  - name: Layer 18
+  - name: ExitButton
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -556,7 +556,7 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 4, y: 4}
     spritePosition: {x: 980, y: 588}
-  - name: Layer 15
+  - name: PlayButton
     originalName: 
     pivot: {x: 0.5, y: 0.5}
     alignment: 0
@@ -577,6 +577,27 @@ ScriptedImporter:
     tessellationDetail: 0
     uvTransform: {x: 510, y: 4}
     spritePosition: {x: 176, y: 604}
+  - name: BossHealth_Right
+    originalName: 
+    pivot: {x: 0.5, y: 0.5}
+    alignment: 0
+    border: {x: 0, y: 0, z: 0, w: 0}
+    rect:
+      serializedVersion: 2
+      x: 1213
+      y: 660
+      width: 736
+      height: 44
+    spriteID: 6f811a8d60c8c2f4b9db1774a227b4c0
+    spriteBone: []
+    spriteOutline: []
+    vertices: []
+    spritePhysicsOutline: []
+    indices: 
+    edges: []
+    tessellationDetail: 0
+    uvTransform: {x: 1213, y: 660}
+    spritePosition: {x: 0, y: 0}
   characterData:
     bones: []
     parts: []

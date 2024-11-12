@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
     public float decreaseHealthSpeed;
     public float healthModified;
 
+    [Header("Puntuation")]
+    public int combo;
+
     [Header("Signals")]
     public bool upHit;
     public bool downHit;
@@ -24,11 +27,12 @@ public class GameManager : MonoBehaviour
     public bool secondLvl;
     public bool thirdLvl;
     public bool boss;
-    bool timerStarted;
+    public bool levelDone;
 
     [Header("Timer")]
     public float timeElapsed;
     [SerializeField] int lvlTime;
+    bool timerStarted;
 
     [Header("EnemySettings")]
     public GameObject[] enemyType;
@@ -56,10 +60,15 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // Realentizamos tiempo si queremos hacer pruebas
+        //Time.timeScale = 0.2f;
+
         // Se definen valores de inicio
         health = maxHealth;
         healthModified = maxHealth;
         timeElapsed = 0;
+        combo = 0;
+        levelDone = false;
     }
 
     private void Update()
@@ -69,6 +78,9 @@ public class GameManager : MonoBehaviour
 
         // Monitoreo de salud
         HealthMonitoring();
+
+        // Monitoreo de combo
+        ComboMonitoring();
 
         // Una vez comenzado el gameplay se inicia un temporizador
         if (firstLvl || timerStarted) Timer();
@@ -88,9 +100,24 @@ public class GameManager : MonoBehaviour
     void HitInteraction()
     {
         // Depende de donde golpeamos, mandamos señales
-        if (upHit && !downHit) { Debug.Log("Up Enemy Hitted"); upHit = false; }
-        else if (!upHit && downHit) { Debug.Log("Down Enemy Hitted"); downHit = false; }
-        else if (upHit && downHit) { Debug.Log("Both Enemies Hitted"); upHit = false; downHit = false; }
+        if (upHit && !downHit) { Debug.Log("Up Enemy Hitted"); Invoke(nameof(RestartHit), .1f); }
+        else if (!upHit && downHit) { Debug.Log("Down Enemy Hitted"); Invoke(nameof(RestartHit), .1f); }
+        else if (upHit && downHit) { Debug.Log("Both Enemies Hitted"); Invoke(nameof(RestartHit), .1f); }
+    }
+
+    void RestartHit()
+    {
+        upHit = false;
+        downHit = false;
+    }
+
+    void ComboMonitoring()
+    {
+        // El combo no debe bajar nunca de 0
+        if (combo <= 0)
+        {
+            combo = 0; 
+        }
     }
 
     void Timer()
@@ -102,24 +129,39 @@ public class GameManager : MonoBehaviour
         timeElapsed += Time.deltaTime;
 
         // Activamos el Boss pasado el tiempo establecido
-        if (timeElapsed >= lvlTime && !boss)
+        if (timeElapsed >= lvlTime)
         {
-            BossEnter();
+            BossActive();
         }
     }
 
-    void BossEnter()
+    void BossActive()
     {
         // Indicamos que el boss esta activado
+        if (!boss) bossHealth = maxBossHealth;
+
         boss = true;
 
-        bossHealth = maxBossHealth;
+        // Al derrotar al boss pasamos de nivel
+        if (bossHealth <= 0 && !levelDone)
+        {
+            levelDone = true;
+
+            Invoke(nameof(NextScene), 2);
+        }
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Almacenamos el número de escena
         sceneNumber = scene.buildIndex;
+
+        // Establecemos valores al cambiar de escena
+        levelDone = false;
+        boss = false;
+        health = maxHealth;
+        bossHealth = maxBossHealth;
+        timeElapsed = 0;
 
         // Indicamos en que nivel nos encontramos
         firstLvl = scene.name == "Level1" ? true : false;
@@ -130,5 +172,13 @@ public class GameManager : MonoBehaviour
         if (firstLvl) enemyIndex = 0;
         if (secondLvl) enemyIndex = 4;
         if (thirdLvl) enemyIndex = 8;
+    }
+
+    void NextScene()
+    {
+        // Comprobamos cual es la siguiente escena y la cargamos
+        int nextScene = sceneNumber + 1;
+
+        SceneManager.LoadScene(nextScene);
     }
 }

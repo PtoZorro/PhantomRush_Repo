@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -8,6 +9,8 @@ public class EnemyController : MonoBehaviour
     Transform bossPosition;
     Vector3 initialDirection;
     [SerializeField] SpriteRenderer spriteRenderer;
+    [SerializeField] GameObject spriteObject;
+    [SerializeField] GameObject explosionVFX;
 
     [Header("Stats")]
     [SerializeField] float moveSpeed;
@@ -19,9 +22,12 @@ public class EnemyController : MonoBehaviour
     [SerializeField] bool isTrap;
 
     [Header("Conditional values")]
-    bool inUpZone;
-    bool inDownZone;
+    [SerializeField] bool inUpZone;
+    [SerializeField] bool inDownZone;
     bool bulletReturn;
+    bool allowMove;
+
+    [SerializeField] bool explode;
 
     private void Start()
     {
@@ -29,15 +35,17 @@ public class EnemyController : MonoBehaviour
         inUpZone = false;
         inDownZone = false;
         bulletReturn = false;
+        allowMove = true;
         bossPosition = GameObject.Find("BossBulletTarget").transform;
         initialDirection = Vector3.left;
+        explosionVFX.SetActive(false);
     }
 
     void Update()
     {
         // Movimiento constante o si ha sido golpeado se devuelve hacia el boss
-        if (!bulletReturn) Movement();
-        else BulletReturn();
+        if (!bulletReturn && allowMove) Movement();
+        else if (allowMove) BulletReturn();
 
         // Monitoreo de cuando es golpeado
         Hitted();
@@ -56,23 +64,56 @@ public class EnemyController : MonoBehaviour
         {
             inUpZone = false;
 
-            // Si es un enemigo normal se suma salud, si es enemigo trampa se resta
-            if (!isTrap) GameManager.instance.healthModified += healthRestored;
-            else GameManager.instance.healthModified -= healthTaken;
+            // Si es un enemigo normal se suma salud y combo, si es enemigo trampa se resta salud y se cancela combo
+            if (!isTrap)
+            {
+                GameManager.instance.healthModified += healthRestored;
+                GameManager.instance.combo++;
+            }
+            else
+            {
+                GameManager.instance.healthModified -= healthTaken;
+                GameManager.instance.combo = 0;
+            }
 
+            // Si el enemigo no es de tipo bala desactivamos el objeto al cabo un tiempo mientras se reproduce la explosión
+            if (!isBullet)
+            {
+                explode = true;
 
-            if (!isBullet) gameObject.SetActive(false);
+                Invoke(nameof(ResetBullet), 2);
+                spriteObject.SetActive(false);
+                explosionVFX.SetActive(true);
+                allowMove = false;
+            }
             else bulletReturn = true;
         }
         else if (inDownZone && GameManager.instance.downHit)
         {
             inDownZone = false;
 
-            // Si es un enemigo normal se suma salud, si es enemigo trampa se resta
-            if (!isTrap) GameManager.instance.healthModified += healthRestored;
-            else GameManager.instance.healthModified -= healthTaken;
+            // Si es un enemigo normal se suma salud y combo, si es enemigo trampa se resta salud y se cancela combo
+            if (!isTrap)
+            {
+                GameManager.instance.healthModified += healthRestored;
+                GameManager.instance.combo++;
+            }
+            else
+            {
+                GameManager.instance.healthModified -= healthTaken;
+                GameManager.instance.combo = 0;
+            }
 
-            if (!isBullet) gameObject.SetActive(false);
+            // Si el enemigo no es de tipo bala desactivamos el objeto al cabo un tiempo mientras se reproduce la explosión
+            if (!isBullet)
+            {
+                explode = true;
+
+                Invoke(nameof(ResetBullet), 2);
+                spriteObject.SetActive(false);
+                explosionVFX.SetActive(true);
+                allowMove = false;
+            }
             else bulletReturn = true;
         }
     }
@@ -107,7 +148,13 @@ public class EnemyController : MonoBehaviour
         // Si entra en la zona límite se desactiva
         else if (other.gameObject.layer == LayerMask.NameToLayer("DestroyZone"))
         {
-            gameObject.SetActive(false);
+            // Si es enemigo trampa no penalizamos al saltarlo
+            if (!isTrap) GameManager.instance.combo = 0;
+
+            // Desactivamos el objeto al cabo un tiempo mientras se reproduce la explosión
+            Invoke(nameof(ResetBullet), 2);
+            spriteObject.SetActive(false);
+            allowMove = false;
         }
 
         // En caso de ser un Bullet del boss
@@ -117,8 +164,11 @@ public class EnemyController : MonoBehaviour
 
             GameManager.instance.bossHealth -= damageToBoss;
 
-            //Dejamos la bala con la configuración original
-            ResetBullet();
+            // Desactivamos el objeto al cabo un tiempo mientras se reproduce la explosión
+            Invoke(nameof(ResetBullet), 2);
+            spriteObject.SetActive(false);
+            explosionVFX.SetActive(true);
+            allowMove = false;
         }
     }
 
@@ -137,8 +187,12 @@ public class EnemyController : MonoBehaviour
 
     void ResetBullet()
     {
+        // Reseteamos valores iniciales
         bulletReturn = false;
-        spriteRenderer.flipX = false;
+        spriteObject.SetActive(true);
+        explosionVFX.SetActive(false);
+        if (isBullet) spriteRenderer.flipX = false;
+        allowMove = true;
 
         // Restablecemos la dirección inicial
         transform.right = -initialDirection;

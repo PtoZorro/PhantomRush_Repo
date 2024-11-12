@@ -8,6 +8,8 @@ public class BossController : MonoBehaviour
     [SerializeField] Transform fightPosition;
     [SerializeField] GameObject spawn;
     [SerializeField] Animator anim;
+    [SerializeField] GameObject explosionVFX;
+    [SerializeField] GameObject spriteObject;
 
     [Header("Settings")]
     [SerializeField] float speed;
@@ -15,6 +17,7 @@ public class BossController : MonoBehaviour
     [Header("Conditional Values")]
     bool inFightPos;
     bool fighting;
+    bool deactivated;
 
     void Start()
     {
@@ -23,6 +26,7 @@ public class BossController : MonoBehaviour
         fighting = false;
         spawn.SetActive(true);
         anim.SetBool("attack", false);
+        explosionVFX.SetActive(false);
     }
 
     void Update()
@@ -40,6 +44,9 @@ public class BossController : MonoBehaviour
             inFightPos = true;
             StartCombat();
         }
+
+        // Si hemos acabado el nivel destruimos el boss
+        if (GameManager.instance.levelDone && !deactivated) Deactivate();
     }
 
     void StartCombat()
@@ -52,5 +59,13 @@ public class BossController : MonoBehaviour
 
         // Animación de ataque constante
         anim.SetBool("attack", true);
+    }
+
+    void Deactivate()
+    {
+        // Desactivamos el boss y activamos explosión
+        deactivated = true;
+        spriteObject.SetActive(false);
+        explosionVFX.SetActive(true);
     }
 }

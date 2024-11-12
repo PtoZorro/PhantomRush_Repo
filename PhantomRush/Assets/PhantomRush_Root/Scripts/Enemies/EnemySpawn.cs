@@ -44,10 +44,6 @@ public class EnemySpawn : MonoBehaviour
         enemiesSpawned = 0;
         upEnemySelected = 0;
         downEnemySelected = 0;
-        upEnemyArray = new GameObject[maxEnemiesSpawned];
-        downEnemyArray = new GameObject[maxEnemiesSpawned];
-        trapEnemyArray = new GameObject[maxEnemiesSpawned];
-        bossBulletArray = new GameObject[maxEnemiesSpawned];
 
         // Instanciamos al principio todos los enemigos que vamos a utilizar
         Spawn();
@@ -74,6 +70,12 @@ public class EnemySpawn : MonoBehaviour
 
     void Spawn()
     {
+        // Iniciamos los Indices de enemigos
+        upEnemyArray = new GameObject[maxEnemiesSpawned];
+        downEnemyArray = new GameObject[maxEnemiesSpawned];
+        trapEnemyArray = new GameObject[maxEnemiesSpawned];
+        bossBulletArray = new GameObject[maxEnemiesSpawned];
+
         // Elegimos enemigos que vamos a utilizar durante el nivel según la información del Singelton
         int enemyIndex = GameManager.instance.enemyIndex;
 

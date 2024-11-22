@@ -16,7 +16,7 @@ TagManager:
   - DestroyZone
   - UpHitZone
   - DownHitZone
-  - 
+  - UIExclusiveObjects
   - 
   - 
   - 

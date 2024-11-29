@@ -16,7 +16,8 @@ public class AspectRatioManager : MonoBehaviour
 
     void SetResolutionForDisplay(int displayIndex)
     {
-        // Verificar que el índice de la pantalla sea válido
+        bool isFullscreen = Screen.fullScreen; // Detecta si el juego está en pantalla completa o no
+
         if (displayIndex < Display.displays.Length)
         {
             if (!Display.displays[displayIndex].active)
@@ -38,9 +39,9 @@ public class AspectRatioManager : MonoBehaviour
                 screenWidth = Mathf.RoundToInt(newHeight * targetAspect);
             }
 
-            // Establecer la resolución del juego ajustada
-            Screen.SetResolution(screenWidth, newHeight, true);
-            Debug.Log($"Resolución ajustada a {screenWidth}x{newHeight} en la pantalla {displayIndex}");
+            // Establecer la resolución del juego ajustada, usando isFullscreen
+            Screen.SetResolution(screenWidth, newHeight, isFullscreen);
+            Debug.Log($"Resolución ajustada a {screenWidth}x{newHeight} en la pantalla {displayIndex} | Pantalla Completa: {isFullscreen}");
         }
         else
         {
@@ -48,6 +49,7 @@ public class AspectRatioManager : MonoBehaviour
         }
     }
 }
+
 
 
 

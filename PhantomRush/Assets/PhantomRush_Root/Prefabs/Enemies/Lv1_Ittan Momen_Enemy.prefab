@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1713045985130575819}
   - component: {fileID: 6536286777608032141}
   - component: {fileID: 3577164949085695681}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Lv1_Ittan Momen_Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}

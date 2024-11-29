@@ -11,11 +11,11 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
+  - UpHitZone
+  - DownHitZone
+  - DestroyZone
+  - Boss
+  - Enemy
   - 
   - 
   - 

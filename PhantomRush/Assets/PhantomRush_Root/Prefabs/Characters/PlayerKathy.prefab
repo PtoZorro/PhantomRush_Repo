@@ -529,7 +529,7 @@ GameObject:
   - component: {fileID: 3452418576478905428}
   - component: {fileID: 1226131190857202652}
   - component: {fileID: 4305430338992257970}
-  m_Layer: 9
+  m_Layer: 6
   m_Name: UpHit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2142,7 +2142,7 @@ GameObject:
   - component: {fileID: 8113698045992104051}
   - component: {fileID: 8366691226886606488}
   - component: {fileID: 2808867591680087797}
-  m_Layer: 10
+  m_Layer: 7
   m_Name: DownHit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
